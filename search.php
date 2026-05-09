@@ -23,7 +23,7 @@ $type  = in_array($_GET['type'] ?? 'all', ['all', 'book', 'manga', 'audiobook'],
     : 'all';
 
 $pageTitle       = $query ? "Search: $query" : 'Search';
-$pageDescription = $query ? "Search results for "$query" on AnyLibrary." : 'Search for books, manga, and audiobooks.';
+$pageDescription = $query ? 'Search results for "' . $query . '" on AnyLibrary.' : 'Search for books, manga, and audiobooks.';
 $extraCss        = ['/assets/css/browse.css'];
 $activePage      = 'search';
 
