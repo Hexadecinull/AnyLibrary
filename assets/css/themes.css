@@ -1,0 +1,63 @@
+/*
+ * AnyLibrary — Free, open-source book library
+ * Copyright (C) 2026  AnyLibrary Contributors
+ * (GPL-3.0 license)
+ */
+
+[data-theme="midnight"] {
+    --c-bg:          #060610;
+    --c-bg-2:        #0b0b1a;
+    --c-bg-3:        #101028;
+    --c-bg-4:        #181838;
+    --c-surface:     #202048;
+    --c-border:      #2a2a5a;
+    --c-border-2:    #353570;
+    --c-accent:      #818cf8;
+    --c-accent-dim:  rgba(129, 140, 248, 0.14);
+    --c-accent-glow: rgba(129, 140, 248, 0.07);
+}
+
+[data-theme="forest"] {
+    --c-bg:          #080f0c;
+    --c-bg-2:        #0d1712;
+    --c-bg-3:        #12211a;
+    --c-bg-4:        #1a2d25;
+    --c-surface:     #223b30;
+    --c-border:      #2e4d3e;
+    --c-border-2:    #3a6050;
+    --c-accent:      #34d399;
+    --c-accent-dim:  rgba(52, 211, 153, 0.12);
+    --c-accent-glow: rgba(52, 211, 153, 0.06);
+}
+
+[data-theme="ember"] {
+    --c-bg:          #0f0b08;
+    --c-bg-2:        #18120d;
+    --c-bg-3:        #221912;
+    --c-bg-4:        #302219;
+    --c-surface:     #402c20;
+    --c-border:      #553829;
+    --c-border-2:    #704533;
+    --c-accent:      #fb923c;
+    --c-accent-dim:  rgba(251, 146, 60, 0.12);
+    --c-accent-glow: rgba(251, 146, 60, 0.06);
+}
+
+[data-theme="paper"] {
+    --c-bg:          #f4f2ee;
+    --c-bg-2:        #eae8e3;
+    --c-bg-3:        #dedcd6;
+    --c-bg-4:        #d0cec8;
+    --c-surface:     #ffffff;
+    --c-border:      #c5c3bd;
+    --c-border-2:    #b0aea8;
+    --c-text:        #1a1a22;
+    --c-text-2:      #444452;
+    --c-text-3:      #6e6d7a;
+    --c-accent:      #1d4ed8;
+    --c-accent-dim:  rgba(29, 78, 216, 0.08);
+    --c-accent-glow: rgba(29, 78, 216, 0.04);
+    --c-overlay:     rgba(244, 242, 238, 0.88);
+    --c-scrim:       rgba(0, 0, 0, 0.1);
+    --c-rating:      #d97706;
+}

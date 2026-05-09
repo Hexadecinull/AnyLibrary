@@ -1,0 +1,63 @@
+Options -Indexes
+Options -MultiViews
+
+RewriteEngine On
+
+# ── Clean URL routing ─────────────────────────────────────────────────────────
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+RewriteRule ^browse/?$           browse.php   [L,QSA]
+RewriteRule ^detail/?$           detail.php   [L,QSA]
+RewriteRule ^reader/?$           reader.php   [L,QSA]
+RewriteRule ^manga/?$            manga.php    [L,QSA]
+RewriteRule ^audiobooks/?$       audiobooks.php [L,QSA]
+RewriteRule ^trending/?$         trending.php [L,QSA]
+RewriteRule ^search/?$           search.php   [L,QSA]
+RewriteRule ^favorites/?$        favorites.php [L,QSA]
+RewriteRule ^history/?$          history.php  [L,QSA]
+RewriteRule ^settings/?$         settings.php [L,QSA]
+RewriteRule ^login/?$            login.php    [L,QSA]
+RewriteRule ^register/?$         register.php [L,QSA]
+RewriteRule ^privacy/?$          privacy.php  [L,QSA]
+RewriteRule ^terms/?$            terms.php    [L,QSA]
+
+# Deny direct access to sensitive directories
+RewriteRule ^(includes|storage|docs)/  - [F,L]
+
+# ── PHP limits ────────────────────────────────────────────────────────────────
+<IfModule mod_php8.c>
+    php_value upload_max_filesize 52M
+    php_value post_max_size       54M
+    php_value memory_limit        128M
+    php_value max_execution_time  30
+</IfModule>
+
+# ── Security headers ──────────────────────────────────────────────────────────
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options     "nosniff"
+    Header always set X-Frame-Options            "SAMEORIGIN"
+    Header always set Referrer-Policy            "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy         "camera=(), microphone=(), geolocation=()"
+    Header always unset X-Powered-By
+</IfModule>
+
+# ── Caching ───────────────────────────────────────────────────────────────────
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css                  "access plus 1 month"
+    ExpiresByType application/javascript    "access plus 1 month"
+    ExpiresByType image/svg+xml             "access plus 1 month"
+    ExpiresByType image/png                 "access plus 1 month"
+    ExpiresByType image/jpeg                "access plus 1 month"
+    ExpiresByType font/woff2                "access plus 1 year"
+    ExpiresByType application/json          "access plus 0 seconds"
+</IfModule>
+
+# ── Gzip ─────────────────────────────────────────────────────────────────────
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json image/svg+xml
+</IfModule>
+
+# ── Error pages ───────────────────────────────────────────────────────────────
+ErrorDocument 404 /404.php

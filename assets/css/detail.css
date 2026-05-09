@@ -1,0 +1,271 @@
+/*
+ * AnyLibrary — Free, open-source book library
+ * Copyright (C) 2026  AnyLibrary Contributors
+ * (GPL-3.0 license)
+ */
+
+#detail-page {
+    padding-bottom: 5rem;
+}
+
+.detail-backdrop {
+    position: relative;
+    height: 380px;
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.detail-backdrop::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(12,12,13,0.2) 0%,
+        rgba(12,12,13,0.6) 60%,
+        var(--c-bg) 100%
+    );
+}
+
+.detail-back-row {
+    padding-top: 1.25rem;
+    padding-bottom: 0.5rem;
+    position: relative;
+    z-index: 10;
+}
+
+.detail-container {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 2.5rem;
+    margin-top: -60px;
+    position: relative;
+    z-index: 2;
+    align-items: start;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid var(--c-border);
+    margin-bottom: 3rem;
+}
+
+.detail-poster {
+    flex-shrink: 0;
+    align-self: flex-start;
+}
+
+.detail-poster img {
+    width: 100%;
+    aspect-ratio: 2/3;
+    object-fit: cover;
+    border-radius: var(--radius-l);
+    box-shadow: var(--shadow-l);
+    border: 1px solid var(--c-border);
+}
+
+.detail-info {
+    padding-top: 1rem;
+}
+
+.detail-info h1 {
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+    line-height: 1.1;
+}
+
+.detail-author {
+    font-size: 1rem;
+    color: var(--c-accent);
+    font-weight: 500;
+    margin-bottom: 0.85rem;
+}
+
+.detail-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.25rem;
+    margin-bottom: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--c-text-2);
+    letter-spacing: 0.02em;
+}
+
+.detail-meta .rating { color: var(--c-accent); }
+
+.tagline {
+    font-style: italic;
+    color: var(--c-text-3);
+    margin-bottom: 1.25rem;
+    font-size: 0.95rem;
+}
+
+.detail-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+}
+
+.overview {
+    color: var(--c-text-2);
+    line-height: 1.75;
+    max-width: 680px;
+}
+
+.detail-section {
+    margin-bottom: 3rem;
+}
+
+.detail-section h2 {
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--c-border);
+}
+
+/* ── Book metadata table ─────────────────────────────────────────────────── */
+
+.book-meta-table {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.5rem 1.5rem;
+    font-size: 0.875rem;
+}
+
+.book-meta-label {
+    color: var(--c-text-3);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    padding-top: 0.1rem;
+    white-space: nowrap;
+}
+
+.book-meta-value { color: var(--c-text-2); }
+
+/* ── Subjects / genres ───────────────────────────────────────────────────── */
+
+.subjects-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+/* ── Related grid ────────────────────────────────────────────────────────── */
+
+.related-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1rem;
+}
+
+/* ── Manga chapters list ─────────────────────────────────────────────────── */
+
+.chapters-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-l);
+    overflow: hidden;
+}
+
+.chapter-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.85rem 1.1rem;
+    background: var(--c-bg-2);
+    transition: background var(--transition);
+    text-decoration: none;
+    gap: 1rem;
+    cursor: pointer;
+}
+.chapter-item:hover { background: var(--c-bg-3); }
+.chapter-item + .chapter-item { border-top: 1px solid var(--c-border); }
+
+.chapter-number {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--c-accent);
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+    min-width: 5ch;
+}
+.chapter-title { font-weight: 500; font-size: 0.9rem; flex: 1; }
+.chapter-date { font-family: var(--font-mono); font-size: 0.73rem; color: var(--c-text-3); flex-shrink: 0; }
+
+/* ── Audiobook tracks ────────────────────────────────────────────────────── */
+
+.tracks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-l);
+    overflow: hidden;
+}
+
+.track-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.85rem 1.1rem;
+    background: var(--c-bg-2);
+    transition: background var(--transition);
+    cursor: pointer;
+}
+.track-item:hover { background: var(--c-bg-3); }
+.track-item + .track-item { border-top: 1px solid var(--c-border); }
+.track-item.playing { background: var(--c-accent-glow); }
+
+.track-number {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--c-text-3);
+    flex-shrink: 0;
+    min-width: 2.5ch;
+    text-align: right;
+}
+
+.track-play-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--c-accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: #fff;
+    transition: all var(--transition);
+    border: none;
+    cursor: pointer;
+}
+.track-play-btn:hover { transform: scale(1.1); filter: brightness(1.15); }
+
+.track-title { flex: 1; font-weight: 500; font-size: 0.875rem; }
+.track-duration { font-family: var(--font-mono); font-size: 0.73rem; color: var(--c-text-3); flex-shrink: 0; }
+
+@media (max-width: 900px) {
+    .detail-container { grid-template-columns: 160px 1fr; gap: 1.5rem; margin-top: -80px; }
+    .related-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+@media (max-width: 640px) {
+    .detail-container { grid-template-columns: 1fr; margin-top: 0; }
+    .detail-poster { max-width: 160px; margin: 0 auto; }
+    .detail-info { text-align: center; }
+    .detail-actions { justify-content: center; }
+    .detail-meta { justify-content: center; }
+    .related-grid { grid-template-columns: repeat(3, 1fr); }
+    .detail-backdrop { height: 260px; }
+    .subjects-list { justify-content: center; }
+}
+
+.detail-back-inline { display: inline-flex; margin-bottom: 1rem; }

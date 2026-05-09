@@ -1,0 +1,244 @@
+/*
+ * AnyLibrary — Free, open-source book library
+ * Copyright (C) 2026  AnyLibrary Contributors
+ * (GPL-3.0 license)
+ */
+
+#settings-page {
+    padding: 2rem 0 5rem;
+}
+
+.settings-layout {
+    max-width: 720px;
+}
+
+.settings-section {
+    margin-bottom: 2.5rem;
+    padding: 1.5rem;
+    background: var(--c-bg-2);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-l);
+}
+
+.settings-section-title {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--c-accent);
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--c-border);
+}
+
+.settings-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--c-border);
+}
+
+.settings-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.settings-row:first-of-type {
+    padding-top: 0;
+}
+
+.settings-row-label {
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.settings-row-desc {
+    font-size: 0.8rem;
+    color: var(--c-text-3);
+    margin-top: 0.15rem;
+}
+
+.settings-control {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+
+.theme-swatches {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.theme-swatch {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-m);
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.theme-swatch::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+}
+
+.theme-swatch.active {
+    border-color: var(--c-accent);
+    box-shadow: 0 0 0 2px var(--c-accent-dim);
+}
+
+.theme-swatch:hover {
+    transform: scale(1.1);
+}
+
+.font-options {
+    display: flex;
+    gap: 0.4rem;
+}
+
+.font-option-btn {
+    padding: 0.35rem 0.75rem;
+    border-radius: var(--radius-s);
+    font-size: 0.8rem;
+    border: 1px solid var(--c-border);
+    background: var(--c-bg-3);
+    color: var(--c-text-2);
+    cursor: pointer;
+    transition: all var(--transition);
+}
+
+.font-option-btn.active {
+    background: var(--c-accent-dim);
+    border-color: var(--c-accent);
+    color: var(--c-accent);
+}
+
+.font-size-control {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+}
+
+.font-size-value {
+    min-width: 3ch;
+    text-align: center;
+    color: var(--c-accent);
+}
+
+.toggle-switch {
+    position: relative;
+    width: 40px;
+    height: 22px;
+    cursor: pointer;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+}
+
+.toggle-track {
+    position: absolute;
+    inset: 0;
+    background: var(--c-bg-4);
+    border-radius: 11px;
+    border: 1px solid var(--c-border-2);
+    transition: background var(--transition);
+}
+
+.toggle-thumb {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background: var(--c-text-3);
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    transition: all var(--transition);
+}
+
+.toggle-switch input:checked ~ .toggle-track {
+    background: var(--c-accent-dim);
+    border-color: var(--c-accent);
+}
+
+.toggle-switch input:checked ~ .toggle-track .toggle-thumb {
+    left: 20px;
+    background: var(--c-accent);
+}
+
+.settings-page-title {
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 2rem;
+}
+
+.about-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 0;
+    font-size: 0.85rem;
+    border-bottom: 1px solid var(--c-border);
+}
+
+.about-item:last-child { border-bottom: none; }
+
+.about-item-label { color: var(--c-text-3); }
+.about-item-value { font-family: var(--font-mono); }
+
+.account-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 0;
+}
+
+.account-avatar {
+    width: 44px;
+    height: 44px;
+    background: var(--c-accent-dim);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    color: var(--c-accent);
+    font-weight: 700;
+    flex-shrink: 0;
+    border: 1px solid var(--c-border);
+}
+
+.account-name {
+    font-weight: 600;
+    margin-bottom: 0.1rem;
+}
+
+.account-email {
+    font-size: 0.8rem;
+    color: var(--c-text-3);
+    font-family: var(--font-mono);
+}
+
+@media (max-width: 640px) {
+    .settings-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+    .settings-control { width: 100%; justify-content: flex-start; }
+    .theme-swatches { flex-wrap: wrap; }
+}

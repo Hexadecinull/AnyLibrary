@@ -1,0 +1,25 @@
+# Dependencies
+/vendor/
+/node_modules/
+
+# Configuration (never commit secrets)
+/includes/config.php
+
+# Uploaded book files
+/storage/books/*
+!/storage/books/.gitkeep
+
+# Caches & logs
+*.log
+*.cache
+/.cache/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo

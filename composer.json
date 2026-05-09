@@ -1,0 +1,23 @@
+{
+    "name": "hexadecinull/anylibrary",
+    "description": "Free, open-source online book library — books, manga, audiobooks",
+    "type": "project",
+    "license": "GPL-3.0-or-later",
+    "keywords": ["library", "books", "manga", "audiobooks", "epub", "openlibrary", "php"],
+    "homepage": "https://github.com/Hexadecinull/AnyLibrary",
+    "authors": [
+        { "name": "SSMG4", "homepage": "https://github.com/SSMG4" },
+        { "name": "AnyLibrary Contributors", "homepage": "https://github.com/Hexadecinull/AnyLibrary/graphs/contributors" }
+    ],
+    "require": {
+        "php": ">=8.1"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.9"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    }
+}
