@@ -2,9 +2,9 @@ name: Lint
 
 on:
   push:
-    branches: [ main, dev ]
+    branches: [main, dev]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   php-lint:
@@ -12,23 +12,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.1'
-          tools: php-cs-fixer
-      - name: Syntax check all PHP files
-        run: find . -name "*.php" -not -path "./vendor/*" -exec php -l {} \; | grep -v "^No syntax errors"
+
+      - name: Check PHP syntax
+        run: |
+          find . -name "*.php" -not -path "./vendor/*" | while read f; do
+            php -l "$f" || exit 1
+          done
 
   js-lint:
     name: JS Lint (ESLint)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - run: npm install -g eslint
+
+      - name: Install ESLint
+        run: npm install -g eslint@8
+
       - name: Run ESLint
-        run: eslint assets/js/ --no-eslintrc --env browser,es2022 --rule '{"no-undef": "warn"}' || true
+        run: eslint assets/js/ || true
