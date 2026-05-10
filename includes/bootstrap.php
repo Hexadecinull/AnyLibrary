@@ -2,30 +2,37 @@
 /*
  * AnyLibrary — Free, open-source book library
  * Copyright (C) 2026  AnyLibrary Contributors
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ * (GPL-3.0 license)
  */
 
-header('Content-Type: application/json; charset=utf-8');
-header('X-Content-Type-Options: nosniff');
+$_config = __DIR__ . '/config.php';
+if (!file_exists($_config)) {
+    http_response_code(503);
+    echo json_encode(['success' => false, 'error' => 'config.php not found — see includes/config.example.php']);
+    exit;
+}
+require_once $_config;
+require_once __DIR__ . '/db.php';
+
+if (defined('APP_ENV') && APP_ENV === 'development') {
+    ini_set('display_errors', '1');
+    error_reporting(E_ALL);
+} else {
+    ini_set('display_errors', '0');
+    error_reporting(0);
+}
 
 set_exception_handler(function (Throwable $e): void {
     if (!headers_sent()) {
         http_response_code(500);
         header('Content-Type: application/json; charset=utf-8');
     }
-    $msg = $e->getMessage() . ' in ' . basename($e->getFile()) . ':' . $e->getLine();
+    $msg = defined('APP_ENV') && APP_ENV === 'development'
+        ? $e->getMessage() . ' in ' . basename($e->getFile()) . ':' . $e->getLine()
+        : $e->getMessage();
     echo json_encode(['success' => false, 'error' => $msg]);
     exit;
 });
+
+header('Content-Type: application/json; charset=utf-8');
+header('X-Content-Type-Options: nosniff');

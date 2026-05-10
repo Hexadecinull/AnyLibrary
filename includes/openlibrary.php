@@ -23,20 +23,27 @@ class OpenLibrary {
     private const CACHE_TTL  = 43200;
 
     private static function cacheGet(string $key): mixed {
-        $pdo = Db::pdo();
-        $row = $pdo->prepare('SELECT data FROM ol_cache WHERE cache_key = ? AND expires_at > NOW()');
-        $row->execute([$key]);
-        $hit = $row->fetchColumn();
-        return $hit !== false ? json_decode($hit, true) : null;
+        try {
+            $pdo = Db::pdo();
+            $row = $pdo->prepare('SELECT data FROM ol_cache WHERE cache_key = ? AND expires_at > NOW()');
+            $row->execute([$key]);
+            $hit = $row->fetchColumn();
+            return $hit !== false ? json_decode($hit, true) : null;
+        } catch (Throwable) {
+            return null;
+        }
     }
 
     private static function cacheSet(string $key, mixed $data, int $ttl = self::CACHE_TTL): void {
-        $pdo = Db::pdo();
-        $stmt = $pdo->prepare(
-            'INSERT INTO ol_cache (cache_key, data, expires_at) VALUES (?, ?, DATE_ADD(NOW(), INTERVAL ? SECOND))
-             ON DUPLICATE KEY UPDATE data = VALUES(data), expires_at = VALUES(expires_at)'
-        );
-        $stmt->execute([$key, json_encode($data), $ttl]);
+        try {
+            $pdo  = Db::pdo();
+            $stmt = $pdo->prepare(
+                'INSERT INTO ol_cache (cache_key, data, expires_at) VALUES (?, ?, DATE_ADD(NOW(), INTERVAL ? SECOND))
+                 ON DUPLICATE KEY UPDATE data = VALUES(data), expires_at = VALUES(expires_at)'
+            );
+            $stmt->execute([$key, json_encode($data), $ttl]);
+        } catch (Throwable) {
+        }
     }
 
     private static function http(string $url): array {
