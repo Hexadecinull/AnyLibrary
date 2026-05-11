@@ -135,6 +135,9 @@
         UI.observeImages(rowsContainer);
         loadContinueReading();
     } catch (err) {
-        featuredContainer.innerHTML = `<div class="empty-state" style="min-height:40vh;display:flex;flex-direction:column;justify-content:center;"><div class="empty-state-icon">&#128218;</div><h3>Could not load books</h3><p>${UI.escHtml(err.message)}</p></div>`;
+        const hint = err.message.includes('got:')
+            ? '<br><small style="font-family:var(--font-mono);font-size:0.72rem;opacity:0.6;">Open Library may be blocking requests from this server. Check the browser console.</small>'
+            : '';
+        featuredContainer.innerHTML = `<div class="empty-state" style="min-height:40vh;display:flex;flex-direction:column;justify-content:center;"><div class="empty-state-icon">&#128218;</div><h3>Could not load books</h3><p>${UI.escHtml(err.message)}${hint}</p></div>`;
     }
 })();

@@ -47,16 +47,39 @@ class OpenLibrary {
     }
 
     private static function http(string $url): array {
-        $ctx = stream_context_create(['http' => [
-            'method'          => 'GET',
-            'timeout'         => 8,
-            'user_agent'      => 'AnyLibrary/1.0 (https://github.com/Hexadecinull/AnyLibrary)',
-            'ignore_errors'   => true,
-        ]]);
-        $raw = @file_get_contents($url, false, $ctx);
-        if ($raw === false) throw new RuntimeException("HTTP request failed: $url");
+        if (!function_exists('curl_init')) {
+            throw new RuntimeException('cURL is not available on this server.');
+        }
+        $ch = curl_init($url);
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_MAXREDIRS      => 3,
+            CURLOPT_TIMEOUT        => 15,
+            CURLOPT_CONNECTTIMEOUT => 8,
+            CURLOPT_ENCODING       => '',
+            CURLOPT_HTTPHEADER     => [
+                'Accept: application/json',
+                'Accept-Language: en-US,en;q=0.9',
+                'User-Agent: Mozilla/5.0 (compatible; AnyLibrary/1.0; +https://github.com/Hexadecinull/AnyLibrary)',
+            ],
+        ]);
+        $raw  = curl_exec($ch);
+        $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $err  = curl_error($ch);
+        curl_close($ch);
+
+        if ($raw === false || $err) {
+            throw new RuntimeException("HTTP request failed ($err): $url");
+        }
+        if ($code >= 400) {
+            throw new RuntimeException("HTTP $code from: $url");
+        }
         $data = json_decode($raw, true);
-        if (!is_array($data)) throw new RuntimeException("Invalid JSON from: $url");
+        if (!is_array($data)) {
+            $preview = substr(strip_tags($raw), 0, 120);
+            throw new RuntimeException("Invalid JSON from: $url — got: $preview");
+        }
         return $data;
     }
 
@@ -208,16 +231,27 @@ class MangaDex {
     private const BASE = 'https://api.mangadex.org';
 
     private static function http(string $url): array {
-        $ctx = stream_context_create(['http' => [
-            'method'        => 'GET',
-            'timeout'       => 8,
-            'user_agent'    => 'AnyLibrary/1.0',
-            'ignore_errors' => true,
-        ]]);
-        $raw  = @file_get_contents($url, false, $ctx);
-        if ($raw === false) throw new RuntimeException("MangaDex request failed: $url");
+        $ch = curl_init($url);
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_MAXREDIRS      => 3,
+            CURLOPT_TIMEOUT        => 15,
+            CURLOPT_CONNECTTIMEOUT => 8,
+            CURLOPT_ENCODING       => '',
+            CURLOPT_HTTPHEADER     => [
+                'Accept: application/json',
+                'User-Agent: Mozilla/5.0 (compatible; AnyLibrary/1.0; +https://github.com/Hexadecinull/AnyLibrary)',
+            ],
+        ]);
+        $raw  = curl_exec($ch);
+        $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        if ($raw === false || $code >= 400) {
+            throw new RuntimeException("MangaDex HTTP $code: $url");
+        }
         $data = json_decode($raw, true);
-        if (!is_array($data)) throw new RuntimeException("Invalid JSON: $url");
+        if (!is_array($data)) throw new RuntimeException("Invalid JSON from MangaDex: $url");
         return $data;
     }
 
@@ -313,6 +347,25 @@ class MangaDex {
 class LibriVox {
     private const BASE = 'https://librivox.org/api/feed/audiobooks';
 
+    private static function curl(string $url): string|false {
+        $ch = curl_init($url);
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_TIMEOUT        => 15,
+            CURLOPT_CONNECTTIMEOUT => 8,
+            CURLOPT_ENCODING       => '',
+            CURLOPT_HTTPHEADER     => [
+                'Accept: application/json',
+                'User-Agent: Mozilla/5.0 (compatible; AnyLibrary/1.0; +https://github.com/Hexadecinull/AnyLibrary)',
+            ],
+        ]);
+        $raw  = curl_exec($ch);
+        $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        return ($raw !== false && $code < 400) ? $raw : false;
+    }
+
     public static function search(string $query, int $limit = 20, int $offset = 0): array {
         $params = http_build_query([
             'title'   => $query,
@@ -321,7 +374,7 @@ class LibriVox {
             'limit'   => $limit,
             'offset'  => $offset,
         ]);
-        $raw = @file_get_contents(self::BASE . "?{$params}");
+        $raw = self::curl(self::BASE . "?{$params}");
         if (!$raw) return ['results' => [], 'total' => 0];
         $data = json_decode($raw, true);
         $books = $data['books'] ?? [];
@@ -329,14 +382,14 @@ class LibriVox {
     }
 
     public static function getBook(string $id): array {
-        $raw  = @file_get_contents(self::BASE . "?id={$id}&format=json&extended=1");
+        $raw  = self::curl(self::BASE . "?id={$id}&format=json&extended=1");
         $data = json_decode($raw ?: '{}', true);
         $books = $data['books'] ?? [];
         return isset($books[0]) ? self::normalize($books[0]) : [];
     }
 
     public static function recent(int $limit = 20): array {
-        $raw  = @file_get_contents(self::BASE . "?format=json&extended=1&limit={$limit}");
+        $raw  = self::curl(self::BASE . "?format=json&extended=1&limit={$limit}");
         $data = json_decode($raw ?: '{}', true);
         $books = $data['books'] ?? [];
         return array_map([self::class, 'normalize'], is_array($books) ? $books : []);
